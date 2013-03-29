@@ -382,6 +382,15 @@ public class CloudBeesUpdateSite extends UpdateSite {
         return due;
     }
 
+    /*
+     * JENKINS-13454 introduces accidental serialization of the UpdateSite's cached getData(), so
+     * as a work-around for Jenkins versions not including the fix in JENKINS-15889, for serialization,
+     * ensure the serialized data does not include the cache.
+     */
+    private Object writeReplace() throws ObjectStreamException {
+        return new CloudBeesUpdateSite(getId(), getUrl());
+    }
+
     /*package*/
     static X509Certificate loadLicenseCaCertificate() throws CertificateException {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");

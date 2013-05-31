@@ -40,7 +40,6 @@ import hudson.util.PersistedList;
 import hudson.util.TimeUnit2;
 import hudson.util.VersionNumber;
 import jenkins.model.Jenkins;
-import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.jvnet.hudson.reactor.Milestone;
 import org.jvnet.localizer.Localizable;
@@ -53,6 +52,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.acegisecurity.context.SecurityContext;
 
 /**
  * Installs the custom update site.
@@ -429,9 +429,8 @@ public class PluginImpl extends Plugin {
                         if (plugin != null && plugin.getVersionNumber().compareTo(pluginArtifactId.version) < 0) {
                             LOGGER.info("Upgrading CloudBees plugin: " + pluginArtifactId.name);
                             status = Messages._Notice_upgradingPlugin(p.getDisplayName(), p.version);
-                            Authentication authentication = Hudson.getAuthentication();
+                            SecurityContext old = ACL.impersonate(ACL.SYSTEM);
                             try {
-                                SecurityContextHolder.getContext().setAuthentication(ACL.SYSTEM);
                                 p.deploy().get();
                                 LOGGER.info("Upgraded CloudBees plugin: " + pluginArtifactId.name + " to " + p.version);
                                 pendingPluginInstalls.remove(0);
@@ -446,7 +445,7 @@ public class PluginImpl extends Plugin {
                                 }
                                 break;
                             } finally {
-                                SecurityContextHolder.getContext().setAuthentication(authentication);
+                                SecurityContextHolder.setContext(old);
                             }
                         } else {
                             LOGGER.info("Detected previous installation of CloudBees plugin: " + pluginArtifactId.name);
@@ -456,9 +455,8 @@ public class PluginImpl extends Plugin {
                     } else {
                         LOGGER.info("Installing CloudBees plugin: " + pluginArtifactId.name + " version " + p.version);
                         status = Messages._Notice_installingPlugin(p.getDisplayName());
-                        Authentication authentication = Hudson.getAuthentication();
+                        SecurityContext old = ACL.impersonate(ACL.SYSTEM);
                         try {
-                            SecurityContextHolder.getContext().setAuthentication(ACL.SYSTEM);
                             p.deploy().get();
                             LOGGER.info(
                                     "Installed CloudBees plugin: " + pluginArtifactId.name + " version " + p.version);
@@ -474,7 +472,7 @@ public class PluginImpl extends Plugin {
                             }
                             break;
                         } finally {
-                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                            SecurityContextHolder.setContext(old);
                         }
                     }
                 }

@@ -105,7 +105,7 @@ public class PluginImpl extends Plugin {
             require("cloudbees-license", "4.1"),
             require("free-license", "4.2"),
             optional("nectar-license", "4.3"),
-            require("cloudbees-folder", "3.10"),
+            require("cloudbees-folder", "4.0"),
             require("cloudbees-cloud-backup", "3.3"),
             require("cloudbees-wasted-minutes-tracker", "3.6"),
             require("cloudbees-deployer-plugin", "4.10")

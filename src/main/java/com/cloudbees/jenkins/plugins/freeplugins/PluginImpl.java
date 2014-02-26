@@ -101,11 +101,10 @@ public class PluginImpl extends Plugin {
      */
     private static final Dependency[] CLOUDBEES_FREE_PLUGINS = {
             require("cloudbees-credentials", "3.2").mandatory(),
-            require("cloudbees-registration", "3.11").mandatory(),
-            require("cloudbees-license", "5.1"),
+            require("cloudbees-registration", "3.13").mandatory(),
+            require("cloudbees-license", "5.3"),
             require("free-license", "4.2"),
-            optional("nectar-license", "5.1"),
-            require("cloudbees-folder", "4.1"),
+            optional("nectar-license", "5.3"),
             require("cloudbees-cloud-backup", "3.3"),
             require("cloudbees-wasted-minutes-tracker", "3.6"),
             require("cloudbees-deployer-plugin", "4.18")

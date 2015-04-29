@@ -80,7 +80,7 @@ public class PluginImpl extends Plugin {
      */
     private static final Set<String> cloudBeesUpdateCenterUrls = new HashSet<String>(Arrays.asList(
             CLOUDBEES_UPDATE_CENTER_URL,
-            "http://jenkins-updates.apps.cloudbees.com/update-center/cloudbees-proprietary/update-center.json"
+            "http://jenkins-updates.cloudbees.com/update-center/cloudbees-proprietary/update-center.json"
     ));
 
     /**

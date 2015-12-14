@@ -34,24 +34,13 @@
   </parent>
 
   <artifactId>cloudbees-plugin-gateway</artifactId>
-  <version>5.1-SNAPSHOT</version>
+  <version>7.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>CloudBees Free Enterprise Plugins</name>
+  <name>CloudBees Free Enterprise Plugins (one-time tidy-up)</name>
   <description>
-    This plugin installs free enterprise plugins from CloudBees. The following plugins are automatically installed:
-
-    * Folders: easily organize your jobs
-
-    * Backup to Cloud: backup your Jenkins into CloudBees cloud
-
-    * Wasted Minutes: find out if you are short of slaves and need to add capacity to speed up builds
-
-    * CloudBees Status: find out how much of the free CloudBees Jenkins capacity in the cloud is available for your use
-
-    Note: You will be asked to register for a free CloudBees account to use these plugins
-
-    (This plugin was formerly known as the CloudBees Plugin Gateway plugin)
+    This plugin performs some tidy up if you previously installed the CloudBees Free Enterprise Plugins.
+    You can safely uninstall it after Jenkins has been restarted at least once with this plugin installed.
   </description>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/CloudBees+Free+Enterprise+Plugins</url>
   <licenses>
@@ -85,21 +74,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins</groupId>
-      <artifactId>async-http-client</artifactId>
-      <version>1.7.8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins</groupId>
-      <artifactId>credentials</artifactId>
-      <version>1.9.4</version>
-    </dependency>
-  </dependencies>
-
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
       <plugin>
         <groupId>org.jenkins-ci.tools</groupId>
         <artifactId>maven-hpi-plugin</artifactId>
@@ -114,62 +94,4 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>dynaload</id>
-      <properties>
-        <skipTests>true</skipTests>
-      </properties>
-      <build>
-        <defaultGoal>verify</defaultGoal>
-        <plugins>
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>get-jenkins</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jenkins-ci.main</groupId>
-                      <artifactId>jenkins-war</artifactId>
-                      <version>1.443</version>
-                      <type>war</type>
-                    </artifactItem>
-                  </artifactItems>
-                  <stripVersion>true</stripVersion>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <executions>
-              <execution>
-                <id>run-jenkins</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>java</executable>
-                  <arguments>
-                    <argument>-DJENKINS_HOME=${project.build.directory}/dynaload</argument>
-                    <argument>-jar</argument>
-                    <argument>${project.build.directory}/dependency/jenkins-war.war</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

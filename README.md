@@ -2,7 +2,7 @@
 
 This plugin has been removed from the Jenkins Update Center
 
-The Folders plugin was made Open Source. 
+The [Folders plugin](https://plugins.jenkins.io/cloudbees-folder/) was made Open Source. 
 The other plugins rely on the RUN@cloud service that CloudBees has shut down. As a result there is no requirement for this plugin to remain in existence.
 
 ## Uninstallation
